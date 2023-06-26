@@ -38,7 +38,18 @@
       matInput
       placeholder="Year"
       [(ngModel)]="year"
-      name="imageUrl"
+      name="year"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <mat-label>Rating</mat-label>
+    <input
+      matInput
+      placeholder="Rating"
+      [(ngModel)]="rating"
+      name="rating"
       required
     />
   </mat-form-field>

@@ -17,17 +17,20 @@ export class HomeComponent {
   ngOnInit(): void {
     this.movieList = this.movieService.movies;
   }
-  addNewMovie() {}
 
-  editMovie(data: Movie) {
-    // this.movieService.Save(data);
+  movieAdded($event: Movie) {
+    //todo api
+    this.movieService.addMovie($event);
   }
+
+  editMovie(data: Movie, i: number) {}
 
   showModal(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
+    this.movieService.triggerAdd.next(true);
     this.isOkLoading = true;
     setTimeout(() => {
       this.isVisible = false;

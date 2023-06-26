@@ -14,6 +14,8 @@ import { AddMovieComponent } from './add-movie/add-movie.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { MatInputModule } from '@angular/material/input';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 
 @NgModule({
   declarations: [HomeComponent, AddMovieComponent],
@@ -30,6 +32,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     MatSelectModule,
     FormsModule,
     NzSelectModule,
+    MatInputModule,
+    NzRateModule,
   ],
 })
 export class HomeModule {}

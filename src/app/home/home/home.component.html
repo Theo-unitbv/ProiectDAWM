@@ -18,13 +18,13 @@
         [nzOkLoading]="isOkLoading"
       >
         <p *nzModalContent>
-          <app-add-movie></app-add-movie>
+          <app-add-movie (newMovie)="movieAdded($event)"></app-add-movie>
         </p>
       </nz-modal>
     </form>
   </div>
 
-  <nz-table #basicTable [nzData]="movieList" [nzPageSize]="8">
+  <nz-table [nzData]="movieList" [nzPageSize]="8">
     <thead>
       <tr>
         <th nzLeft>Title</th>
@@ -36,19 +36,18 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <!-- ! pipe -->
+      <tr *ngFor="let data of movieList; let i = index">
         <td nzLeft>{{ data.title | uppercase }}</td>
         <td>{{ data.year }}</td>
         <td>{{ data.length }}</td>
         <td>{{ data.producer }}</td>
-        <td>{{ data.rating }}</td>
+        <td><nz-rate [ngModel]="data.rating"></nz-rate></td>
         <td>
           <span
             nz-icon
             nzType="edit"
             nzTheme="outline"
-            (click)="editMovie(data)"
+            (click)="editMovie(data, i)"
           ></span>
         </td>
       </tr>
