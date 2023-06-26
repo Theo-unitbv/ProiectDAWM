@@ -1,1 +1,57 @@
-<p>home works!</p>
+<nz-page-header
+  class="site-page-header"
+  nzTitle="Welcome to your Movie List"
+  nzSubtitle="Your favorites"
+></nz-page-header>
+<div class="table-container">
+  <div class="table-operations">
+    <form class="d-flex" role="search">
+      <button nz-button nzType="primary" mat-button (click)="showModal()">
+        <span>Add New Movie</span>
+      </button>
+      <nz-modal
+        *ngIf="isVisible"
+        [(nzVisible)]="isVisible"
+        nzTitle="Add a movie"
+        (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()"
+        [nzOkLoading]="isOkLoading"
+      >
+        <p *nzModalContent>
+          <app-add-movie></app-add-movie>
+        </p>
+      </nz-modal>
+    </form>
+  </div>
+
+  <nz-table #basicTable [nzData]="movieList" [nzPageSize]="8">
+    <thead>
+      <tr>
+        <th nzLeft>Title</th>
+        <th>Year</th>
+        <th>Length</th>
+        <th>Producer</th>
+        <th>Rating</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <!-- ! pipe -->
+        <td nzLeft>{{ data.title | uppercase }}</td>
+        <td>{{ data.year }}</td>
+        <td>{{ data.length }}</td>
+        <td>{{ data.producer }}</td>
+        <td>{{ data.rating }}</td>
+        <td>
+          <span
+            nz-icon
+            nzType="edit"
+            nzTheme="outline"
+            (click)="editMovie(data)"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
