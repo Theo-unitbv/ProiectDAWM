@@ -25,6 +25,10 @@ export class HomeComponent {
 
   editMovie(data: Movie, i: number) {}
 
+  deleteMovie(i: number) {
+    this.movieService.deleteMovie(i);
+  }
+
   showModal(): void {
     this.isVisible = true;
   }

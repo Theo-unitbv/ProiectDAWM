@@ -33,6 +33,7 @@
         <th>Producer</th>
         <th>Rating</th>
         <th>Action</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -48,6 +49,14 @@
             nzType="edit"
             nzTheme="outline"
             (click)="editMovie(data, i)"
+          ></span>
+        </td>
+        <td>
+          <span
+            nz-icon
+            nzType="delete"
+            nzTheme="outline"
+            (click)="deleteMovie(i)"
           ></span>
         </td>
       </tr>

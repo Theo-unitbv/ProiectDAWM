@@ -15,4 +15,7 @@ export class MovieService {
   addMovie(movie: Movie) {
     this.movies.push(movie);
   }
+  deleteMovie(i: number) {
+    this.movies.splice(i, 1);
+  }
 }
