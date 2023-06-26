@@ -1,0 +1,41 @@
+<div class="form-container">
+  <form class="custom-form">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input
+        name="email"
+        type="email"
+        class="form-control"
+        id="exampleInputEmail1"
+        aria-describedby="emailHelp"
+        [(ngModel)]="payload.email"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input
+        name="password"
+        type="password"
+        class="form-control"
+        id="exampleInputPassword1"
+        [(ngModel)]="payload.password"
+      />
+    </div>
+    <div class="mb-3 form-check">
+      <input
+        name="remember"
+        type="checkbox"
+        class="form-check-input"
+        id="exampleCheck1"
+        [(ngModel)]="rememberMe"
+      />
+      <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Submit
+    </button>
+    <p class="register-container">
+      Don't have an account? <a [routerLink]="'/sign-up'">Register now!</a>
+    </p>
+  </form>
+</div>
