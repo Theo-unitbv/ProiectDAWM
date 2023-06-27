@@ -6,15 +6,15 @@
 <div class="table-container">
   <div class="table-operations">
     <form class="d-flex" role="search">
-      <button nz-button nzType="primary" mat-button (click)="showModal()">
+      <button nz-button nzType="primary" mat-button (click)="showModalForAdd()">
         <span>Add New Movie</span>
       </button>
       <nz-modal
-        *ngIf="isVisible"
-        [(nzVisible)]="isVisible"
+        *ngIf="isVisibleAdd"
+        [(nzVisible)]="isVisibleAdd"
         nzTitle="Add a movie"
         (nzOnCancel)="handleCancel()"
-        (nzOnOk)="handleOk()"
+        (nzOnOk)="handleOkAdd()"
         [nzOkLoading]="isOkLoading"
       >
         <p *nzModalContent>
@@ -44,12 +44,37 @@
         <td>{{ data.producer }}</td>
         <td><nz-rate [ngModel]="data.rating"></nz-rate></td>
         <td>
-          <span
+          <div class="table-operations">
+            <form class="d-flex" role="search">
+              <span
+                nz-icon
+                nzType="edit"
+                nzTheme="outline"
+                (click)="showModalForEdit()"
+              >
+              </span>
+              <nz-modal
+                *ngIf="isVisibleEdit"
+                [(nzVisible)]="isVisibleEdit"
+                nzTitle="Edit a movie"
+                (nzOnCancel)="handleCancel()"
+                (nzOnOk)="handleOkEdit()"
+                [nzOkLoading]="isOkLoading"
+              >
+                <p *nzModalContent>
+                  <app-edit-movie [originalMovie]="data"> </app-edit-movie>
+                </p>
+              </nz-modal>
+            </form>
+          </div>
+          <!-- <span
             nz-icon
             nzType="edit"
             nzTheme="outline"
             (click)="editMovie(data, i)"
-          ></span>
+          >
+            <app-edit-movie [originalMovie]="data"> </app-edit-movie
+          ></span> -->
         </td>
         <td>
           <span

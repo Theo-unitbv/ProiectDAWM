@@ -9,7 +9,8 @@ import { MovieService } from 'src/app/services/movie.service';
 })
 export class HomeComponent {
   movieList!: Movie[];
-  isVisible = false;
+  isVisibleAdd = false;
+  isVisibleEdit = false;
   isOkLoading = false;
 
   constructor(private movieService: MovieService) {}
@@ -29,20 +30,32 @@ export class HomeComponent {
     this.movieService.deleteMovie(i);
   }
 
-  showModal(): void {
-    this.isVisible = true;
+  showModalForAdd(): void {
+    this.isVisibleAdd = true;
+  }
+  showModalForEdit(): void {
+    this.isVisibleEdit = true;
   }
 
-  handleOk(): void {
+  handleOkEdit(): void {
+    this.isOkLoading = true;
+    setTimeout(() => {
+      this.isVisibleEdit = false;
+      this.isOkLoading = false;
+    }, 1200);
+  }
+
+  handleOkAdd(): void {
     this.movieService.triggerAdd.next(true);
     this.isOkLoading = true;
     setTimeout(() => {
-      this.isVisible = false;
+      this.isVisibleAdd = false;
       this.isOkLoading = false;
     }, 1200);
   }
 
   handleCancel(): void {
-    this.isVisible = false;
+    this.isVisibleAdd = false;
+    this.isVisibleEdit = false;
   }
 }

@@ -16,9 +16,10 @@ import { FormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { MatInputModule } from '@angular/material/input';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
 
 @NgModule({
-  declarations: [HomeComponent, AddMovieComponent],
+  declarations: [HomeComponent, AddMovieComponent, EditMovieComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,
