@@ -9,6 +9,8 @@ import movieData from './movies.json';
 export class MovieService {
   movies: Movie[] = movieData;
   triggerAdd: Subject<boolean> = new Subject<boolean>();
+  triggerEdit: Subject<boolean> = new Subject<boolean>();
+  updateMovies: Subject<boolean> = new Subject<boolean>();
 
   constructor() {}
 

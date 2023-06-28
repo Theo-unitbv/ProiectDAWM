@@ -4,4 +4,5 @@ export interface Movie {
   length: number;
   year: number;
   rating: number;
+  editable: boolean;
 }

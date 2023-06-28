@@ -12,11 +12,16 @@ export class HomeComponent {
   isVisibleAdd = false;
   isVisibleEdit = false;
   isOkLoading = false;
+  movieSelectedForEdit: boolean = false;
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit(): void {
     this.movieList = this.movieService.movies;
+    this.movieService.updateMovies.subscribe((_) => {
+      this.movieSelectedForEdit = false;
+      // this.movieList = this.movieService.movies;
+    });
   }
 
   movieAdded($event: Movie) {
@@ -33,11 +38,13 @@ export class HomeComponent {
   showModalForAdd(): void {
     this.isVisibleAdd = true;
   }
-  showModalForEdit(): void {
+  showModalForEdit(data: Movie): void {
+    data.editable = true;
     this.isVisibleEdit = true;
   }
 
   handleOkEdit(): void {
+    this.movieService.triggerEdit.next(true);
     this.isOkLoading = true;
     setTimeout(() => {
       this.isVisibleEdit = false;

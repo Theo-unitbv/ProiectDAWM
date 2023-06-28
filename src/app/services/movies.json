@@ -4,27 +4,31 @@
     "producer": "Alexandra Lamba",
     "length": 120,
     "year": 2015,
-    "rating": 4
+    "rating": 4,
+    "editable": false
   },
   {
     "title": "Wednesday",
     "producer": "Theodor Moise",
     "length": 140,
     "year": 2022,
-    "rating": 5
+    "rating": 5,
+    "editable": false
   },
   {
     "title": "GOT",
     "producer": "Andreea Ioana",
     "length": 100,
     "year": 2020,
-    "rating": 4
+    "rating": 4,
+    "editable": false
   },
   {
     "title": "After",
     "producer": "Mihai Nastase",
     "length": 150,
     "year": 2021,
-    "rating": 3
+    "rating": 3,
+    "editable": false
   }
 ]

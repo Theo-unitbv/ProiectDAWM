@@ -50,11 +50,11 @@
                 nz-icon
                 nzType="edit"
                 nzTheme="outline"
-                (click)="showModalForEdit()"
+                (click)="showModalForEdit(data)"
               >
               </span>
               <nz-modal
-                *ngIf="isVisibleEdit"
+                *ngIf="isVisibleEdit && data.editable"
                 [(nzVisible)]="isVisibleEdit"
                 nzTitle="Edit a movie"
                 (nzOnCancel)="handleCancel()"

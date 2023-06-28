@@ -37,6 +37,7 @@ export class AddMovieComponent implements OnInit, OnDestroy {
         length: this.length,
         year: this.year,
         rating: this.rating,
+        editable: false,
       };
       this.newMovie.emit(movie);
     });
