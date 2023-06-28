@@ -11,17 +11,14 @@ export class HomeComponent {
   movieList!: Movie[];
   isVisibleAdd = false;
   isVisibleEdit = false;
+  isVisibleDetails = false;
   isOkLoading = false;
-  movieSelectedForEdit: boolean = false;
+  movieSelectedForDetails!: Movie;
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit(): void {
     this.movieList = this.movieService.movies;
-    this.movieService.updateMovies.subscribe((_) => {
-      this.movieSelectedForEdit = false;
-      // this.movieList = this.movieService.movies;
-    });
   }
 
   movieAdded($event: Movie) {
@@ -29,15 +26,19 @@ export class HomeComponent {
     this.movieService.addMovie($event);
   }
 
-  editMovie(data: Movie, i: number) {}
-
   deleteMovie(i: number) {
     this.movieService.deleteMovie(i);
+  }
+
+  showModalDetails(data: Movie) {
+    this.movieSelectedForDetails = data;
+    this.isVisibleDetails = true;
   }
 
   showModalForAdd(): void {
     this.isVisibleAdd = true;
   }
+
   showModalForEdit(data: Movie): void {
     data.editable = true;
     this.isVisibleEdit = true;
@@ -64,5 +65,22 @@ export class HomeComponent {
   handleCancel(): void {
     this.isVisibleAdd = false;
     this.isVisibleEdit = false;
+  }
+
+  handleCancelDetails() {
+    this.isVisibleDetails = false;
+  }
+
+  sortByYear() {
+    this.movieService.sortByYear();
+  }
+  sortByLength() {
+    this.movieService.sortByLength();
+  }
+  sortByTitle() {
+    this.movieService.sortByTitle();
+  }
+  sortByRating() {
+    this.movieService.sortByRating();
   }
 }

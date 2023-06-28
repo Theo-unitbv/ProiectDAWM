@@ -20,4 +20,24 @@ export class MovieService {
   deleteMovie(i: number) {
     this.movies.splice(i, 1);
   }
+  sortByYear() {
+    this.movies.sort((a, b) => {
+      return a.year < b.year ? 1 : -1;
+    });
+  }
+  sortByRating() {
+    this.movies.sort((a, b) => {
+      return a.rating < b.rating ? 1 : -1;
+    });
+  }
+  sortByTitle() {
+    this.movies.sort((a, b) => {
+      return a.title < b.title ? 1 : -1;
+    });
+  }
+  sortByLength() {
+    this.movies.sort((a, b) => {
+      return a.length < b.length ? 1 : -1;
+    });
+  }
 }

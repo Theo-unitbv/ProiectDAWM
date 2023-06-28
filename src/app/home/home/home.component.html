@@ -3,6 +3,7 @@
   nzTitle="Welcome to your Movie List"
   nzSubtitle="Your favorites"
 ></nz-page-header>
+
 <div class="table-container">
   <div class="table-operations">
     <form class="d-flex" role="search">
@@ -33,11 +34,27 @@
         <th>Producer</th>
         <th>Rating</th>
         <th>Action</th>
-        <th></th>
+        <th>
+          <a nz-dropdown [nzDropdownMenu]="menu">
+            Sort by
+            <span nz-icon nzType="down"></span>
+          </a>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item (click)="sortByYear()">Year</li>
+              <li nz-menu-item (click)="sortByLength()">Length</li>
+              <li nz-menu-item (click)="sortByTitle()">Title</li>
+              <li nz-menu-item (click)="sortByRating()">Rating</li>
+            </ul>
+          </nz-dropdown-menu>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of movieList; let i = index">
+      <tr
+        *ngFor="let data of movieList; let i = index"
+        (click)="showModalDetails(data)"
+      >
         <td nzLeft>{{ data.title | uppercase }}</td>
         <td>{{ data.year }}</td>
         <td>{{ data.length }}</td>
@@ -67,14 +84,6 @@
               </nz-modal>
             </form>
           </div>
-          <!-- <span
-            nz-icon
-            nzType="edit"
-            nzTheme="outline"
-            (click)="editMovie(data, i)"
-          >
-            <app-edit-movie [originalMovie]="data"> </app-edit-movie
-          ></span> -->
         </td>
         <td>
           <span
@@ -88,3 +97,42 @@
     </tbody>
   </nz-table>
 </div>
+
+<!-- <nz-modal
+  *ngIf="isVisibleDetails"
+  [(nzVisible)]="isVisibleDetails"
+  [nzTitle]="movieSelectedForDetails.title"
+  (nzOnCancel)="handleCancelDetails()"
+>
+  <ng-container *nzModalContent>
+    <h2>Produced by {{ movieSelectedForDetails.producer }}</h2>
+    <p>
+      The movie debuted in {{ movieSelectedForDetails.year }}, having a duration
+      of {{ movieSelectedForDetails.length }}
+    </p>
+  </ng-container>
+</nz-modal> -->
+
+<nz-modal
+  *ngIf="isVisibleDetails"
+  [(nzVisible)]="isVisibleDetails"
+  [nzTitle]="modalTitle"
+  [nzContent]="modalContent"
+  [nzFooter]="modalFooter"
+>
+  <ng-template #modalTitle>{{ movieSelectedForDetails.title }}</ng-template>
+
+  <ng-template #modalContent>
+    <h2>Produced by {{ movieSelectedForDetails.producer }}</h2>
+    <p>
+      The movie debuted in {{ movieSelectedForDetails.year }}, having a duration
+      of {{ movieSelectedForDetails.length }}
+    </p>
+  </ng-template>
+
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="handleCancelDetails()">
+      Cancel
+    </button>
+  </ng-template>
+</nz-modal>
