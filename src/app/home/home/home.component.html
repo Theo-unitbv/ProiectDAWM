@@ -3,6 +3,12 @@
   nzTitle="Welcome to your Movie List"
   nzSubtitle="Your favorites"
 ></nz-page-header>
+<div class="search">
+  <app-search (searchMovieEmitter)="onSearchMovieEntered($event)"></app-search>
+  <button class="reset" nz-button nzType="default" (click)="resetSearch()">
+    Reset
+  </button>
+</div>
 <div *ngIf="movies$ | async as movies; else loading">
   <div class="table-container">
     <div class="table-operations">
@@ -12,6 +18,7 @@
           nzType="primary"
           mat-button
           (click)="showModalForAdd()"
+          class="addbutton"
         >
           <span>Add New Movie</span>
         </button>
@@ -31,7 +38,7 @@
     </div>
 
     <ng-container *ngIf="movies.length; else noItems">
-      <nz-table [nzData]="movies" [nzPageSize]="8">
+      <nz-table [nzData]="movies" class="tabel">
         <thead>
           <tr>
             <th nzLeft>Title</th>

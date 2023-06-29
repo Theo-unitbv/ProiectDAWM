@@ -19,9 +19,16 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { SearchComponent } from './search/search.component';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @NgModule({
-  declarations: [HomeComponent, AddMovieComponent, EditMovieComponent],
+  declarations: [
+    HomeComponent,
+    AddMovieComponent,
+    EditMovieComponent,
+    SearchComponent,
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -39,6 +46,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
     NzRateModule,
     NzDropDownModule,
     NzEmptyModule,
+    NzInputModule,
   ],
 })
 export class HomeModule {}

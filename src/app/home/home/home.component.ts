@@ -29,6 +29,22 @@ export class HomeComponent {
     });
   }
 
+  onSearchMovieEntered(searchValue: string) {
+    const filteredMovies$ = this.movies$.pipe(
+      switchMap((movies) => {
+        const filteredMovies = movies.filter((data) => {
+          return data.title.toLowerCase().includes(searchValue.toLowerCase());
+        });
+        return of(filteredMovies);
+      })
+    );
+    this.movies$ = filteredMovies$;
+  }
+
+  resetSearch() {
+    this.movieService.updateMovies.next(true);
+  }
+
   movieAdded($event: Movie) {
     this.movieService.addMovie($event).subscribe(() => {
       this.movies$ = this.movieService.getMovies();

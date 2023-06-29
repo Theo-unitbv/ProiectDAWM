@@ -1,0 +1,13 @@
+.search {
+  text-align: center;
+  color: red($color: #000000);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input {
+  border-radius: 10px;
+  width: 200px;
+  height: 40px;
+}
