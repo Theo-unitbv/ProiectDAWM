@@ -1,43 +1,47 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Movie } from '../models/movie';
-import movieData from './movies.json';
+// import movieData from './movies.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  movies: Movie[] = movieData;
+  movies!: Movie[];
   triggerAdd: Subject<boolean> = new Subject<boolean>();
   triggerEdit: Subject<boolean> = new Subject<boolean>();
   updateMovies: Subject<boolean> = new Subject<boolean>();
+  baseURL = 'http://localhost:5156/api';
+  readonly httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
 
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
-  addMovie(movie: Movie) {
-    this.movies.push(movie);
+  getMovies(): Observable<Movie[]> {
+    return this.httpClient.get<Movie[]>(this.baseURL + '/Movies');
   }
-  deleteMovie(i: number) {
-    this.movies.splice(i, 1);
+
+  editMovie(movie: Movie) {
+    const putUrl = this.baseURL + `/Movies/update/${movie.id}`;
+
+    return this.httpClient.put<Movie>(putUrl, movie, this.httpOptions);
   }
-  sortByYear() {
-    this.movies.sort((a, b) => {
-      return a.year < b.year ? 1 : -1;
-    });
+
+  addMovie(movie: Movie): Observable<Movie> {
+    // this.movies.push(movie);
+    return this.httpClient.post<Movie>(
+      this.baseURL + '/Movies',
+      movie,
+      this.httpOptions
+    );
   }
-  sortByRating() {
-    this.movies.sort((a, b) => {
-      return a.rating < b.rating ? 1 : -1;
-    });
-  }
-  sortByTitle() {
-    this.movies.sort((a, b) => {
-      return a.title < b.title ? 1 : -1;
-    });
-  }
-  sortByLength() {
-    this.movies.sort((a, b) => {
-      return a.length < b.length ? 1 : -1;
-    });
+  deleteMovie(id: any) {
+    const deleteUrl = this.baseURL + `/Movies/${id}`;
+
+    return this.httpClient.delete(deleteUrl, this.httpOptions);
   }
 }

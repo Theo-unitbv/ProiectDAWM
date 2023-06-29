@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { Movie } from 'src/app/models/movie';
 import { MovieService } from 'src/app/services/movie.service';
 
@@ -14,20 +15,30 @@ export class HomeComponent {
   isVisibleDetails = false;
   isOkLoading = false;
   movieSelectedForDetails!: Movie;
+  movies$!: Observable<Movie[]>;
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService) {
+    this.movieService.getMovies().subscribe((data) => {
+      this.movies$ = of(data);
+    });
+  }
 
   ngOnInit(): void {
-    this.movieList = this.movieService.movies;
+    this.movieService.updateMovies.subscribe((_) => {
+      this.movies$ = this.movieService.getMovies();
+    });
   }
 
   movieAdded($event: Movie) {
-    //todo api
-    this.movieService.addMovie($event);
+    this.movieService.addMovie($event).subscribe(() => {
+      this.movies$ = this.movieService.getMovies();
+    });
   }
 
-  deleteMovie(i: number) {
-    this.movieService.deleteMovie(i);
+  deleteMovie(data: Movie) {
+    this.movieService.deleteMovie(data.id).subscribe((_) => {
+      this.movies$ = this.movieService.getMovies();
+    });
   }
 
   showModalDetails(data: Movie) {
@@ -42,11 +53,13 @@ export class HomeComponent {
   showModalForEdit(data: Movie): void {
     data.editable = true;
     this.isVisibleEdit = true;
+    this.isVisibleDetails = false;
   }
 
   handleOkEdit(): void {
     this.movieService.triggerEdit.next(true);
     this.isOkLoading = true;
+    this.isVisibleDetails = false;
     setTimeout(() => {
       this.isVisibleEdit = false;
       this.isOkLoading = false;
@@ -64,6 +77,7 @@ export class HomeComponent {
 
   handleCancel(): void {
     this.isVisibleAdd = false;
+    this.isVisibleDetails = false;
     this.isVisibleEdit = false;
   }
 
@@ -72,15 +86,47 @@ export class HomeComponent {
   }
 
   sortByYear() {
-    this.movieService.sortByYear();
+    const sortedMovies$ = this.movies$.pipe(
+      switchMap((movies) => {
+        const sortedMovies = movies.sort((a, b) => {
+          return a.year < b.year ? 1 : -1;
+        });
+        return of(sortedMovies);
+      })
+    );
+    this.movies$ = sortedMovies$;
   }
   sortByLength() {
-    this.movieService.sortByLength();
+    const sortedMovies$ = this.movies$.pipe(
+      switchMap((movies) => {
+        const sortedMovies = movies.sort((a, b) => {
+          return a.length < b.length ? 1 : -1;
+        });
+        return of(sortedMovies);
+      })
+    );
+    this.movies$ = sortedMovies$;
   }
   sortByTitle() {
-    this.movieService.sortByTitle();
+    const sortedMovies$ = this.movies$.pipe(
+      switchMap((movies) => {
+        const sortedMovies = movies.sort((a, b) => {
+          return a.title < b.title ? 1 : -1;
+        });
+        return of(sortedMovies);
+      })
+    );
+    this.movies$ = sortedMovies$;
   }
   sortByRating() {
-    this.movieService.sortByRating();
+    const sortedMovies$ = this.movies$.pipe(
+      switchMap((movies) => {
+        const sortedMovies = movies.sort((a, b) => {
+          return a.rating < b.rating ? 1 : -1;
+        });
+        return of(sortedMovies);
+      })
+    );
+    this.movies$ = sortedMovies$;
   }
 }

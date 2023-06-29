@@ -25,6 +25,7 @@ export class EditMovieComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub = this.movieService.triggerEdit.subscribe((data) => {
       const movie: Movie = {
+        id: this.originalMovie.id,
         title: this.title || this.originalMovie.title,
         producer: this.producer || this.originalMovie.producer,
         length: this.length || this.originalMovie.length,
@@ -32,13 +33,9 @@ export class EditMovieComponent implements OnInit, OnDestroy {
         rating: this.rating || this.originalMovie.rating,
         editable: false,
       };
-
-      const foundIndex = this.movieService.movies.findIndex(
-        (x) => x === this.originalMovie
-      );
-      this.movieService.movies[foundIndex] = { ...movie };
-
-      // this.movieService.updateMovies.next(true);
+      this.movieService.editMovie(movie).subscribe((_) => {
+        this.movieService.updateMovies.next(true);
+      });
     });
   }
 }

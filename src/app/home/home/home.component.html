@@ -3,118 +3,112 @@
   nzTitle="Welcome to your Movie List"
   nzSubtitle="Your favorites"
 ></nz-page-header>
+<div *ngIf="movies$ | async as movies; else loading">
+  <div class="table-container">
+    <div class="table-operations">
+      <form class="d-flex" role="search">
+        <button
+          nz-button
+          nzType="primary"
+          mat-button
+          (click)="showModalForAdd()"
+        >
+          <span>Add New Movie</span>
+        </button>
+        <nz-modal
+          *ngIf="isVisibleAdd"
+          [(nzVisible)]="isVisibleAdd"
+          nzTitle="Add a movie"
+          (nzOnCancel)="handleCancel()"
+          (nzOnOk)="handleOkAdd()"
+          [nzOkLoading]="isOkLoading"
+        >
+          <p *nzModalContent>
+            <app-add-movie (newMovie)="movieAdded($event)"></app-add-movie>
+          </p>
+        </nz-modal>
+      </form>
+    </div>
 
-<div class="table-container">
-  <div class="table-operations">
-    <form class="d-flex" role="search">
-      <button nz-button nzType="primary" mat-button (click)="showModalForAdd()">
-        <span>Add New Movie</span>
-      </button>
-      <nz-modal
-        *ngIf="isVisibleAdd"
-        [(nzVisible)]="isVisibleAdd"
-        nzTitle="Add a movie"
-        (nzOnCancel)="handleCancel()"
-        (nzOnOk)="handleOkAdd()"
-        [nzOkLoading]="isOkLoading"
-      >
-        <p *nzModalContent>
-          <app-add-movie (newMovie)="movieAdded($event)"></app-add-movie>
-        </p>
-      </nz-modal>
-    </form>
-  </div>
-
-  <nz-table [nzData]="movieList" [nzPageSize]="8">
-    <thead>
-      <tr>
-        <th nzLeft>Title</th>
-        <th>Year</th>
-        <th>Length</th>
-        <th>Producer</th>
-        <th>Rating</th>
-        <th>Action</th>
-        <th>
-          <a nz-dropdown [nzDropdownMenu]="menu">
-            Sort by
-            <span nz-icon nzType="down"></span>
-          </a>
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu nzSelectable>
-              <li nz-menu-item (click)="sortByYear()">Year</li>
-              <li nz-menu-item (click)="sortByLength()">Length</li>
-              <li nz-menu-item (click)="sortByTitle()">Title</li>
-              <li nz-menu-item (click)="sortByRating()">Rating</li>
-            </ul>
-          </nz-dropdown-menu>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        *ngFor="let data of movieList; let i = index"
-        (click)="showModalDetails(data)"
-      >
-        <td nzLeft>{{ data.title | uppercase }}</td>
-        <td>{{ data.year }}</td>
-        <td>{{ data.length }}</td>
-        <td>{{ data.producer }}</td>
-        <td><nz-rate [ngModel]="data.rating"></nz-rate></td>
-        <td>
-          <div class="table-operations">
-            <form class="d-flex" role="search">
+    <ng-container *ngIf="movies.length; else noItems">
+      <nz-table [nzData]="movies" [nzPageSize]="8">
+        <thead>
+          <tr>
+            <th nzLeft>Title</th>
+            <th>Year</th>
+            <th>Length</th>
+            <th>Producer</th>
+            <th>Rating</th>
+            <th>Action</th>
+            <th>
+              <a nz-dropdown [nzDropdownMenu]="menu">
+                Sort by
+                <span nz-icon nzType="down"></span>
+              </a>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu nzSelectable>
+                  <li nz-menu-item (click)="sortByYear()">Year</li>
+                  <li nz-menu-item (click)="sortByLength()">Length</li>
+                  <li nz-menu-item (click)="sortByTitle()">Title</li>
+                  <li nz-menu-item (click)="sortByRating()">Rating</li>
+                </ul>
+              </nz-dropdown-menu>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let data of movies; let i = index"
+            (click)="showModalDetails(data)"
+          >
+            <td nzLeft>{{ data.title | uppercase }}</td>
+            <td>{{ data.year }}</td>
+            <td>{{ data.length }}</td>
+            <td>{{ data.producer }}</td>
+            <td><nz-rate [ngModel]="data.rating" nzDisabled></nz-rate></td>
+            <td>
+              <div class="table-operations">
+                <form class="d-flex" role="search">
+                  <span
+                    nz-icon
+                    nzType="edit"
+                    nzTheme="outline"
+                    (click)="showModalForEdit(data)"
+                  >
+                  </span>
+                  <nz-modal
+                    *ngIf="isVisibleEdit && data.editable"
+                    [(nzVisible)]="isVisibleEdit"
+                    nzTitle="Edit a movie"
+                    (nzOnCancel)="handleCancel()"
+                    (nzOnOk)="handleOkEdit()"
+                    [nzOkLoading]="isOkLoading"
+                  >
+                    <p *nzModalContent>
+                      <app-edit-movie [originalMovie]="data"> </app-edit-movie>
+                    </p>
+                  </nz-modal>
+                </form>
+              </div>
+            </td>
+            <td>
               <span
                 nz-icon
-                nzType="edit"
+                nzType="delete"
                 nzTheme="outline"
-                (click)="showModalForEdit(data)"
-              >
-              </span>
-              <nz-modal
-                *ngIf="isVisibleEdit && data.editable"
-                [(nzVisible)]="isVisibleEdit"
-                nzTitle="Edit a movie"
-                (nzOnCancel)="handleCancel()"
-                (nzOnOk)="handleOkEdit()"
-                [nzOkLoading]="isOkLoading"
-              >
-                <p *nzModalContent>
-                  <app-edit-movie [originalMovie]="data"> </app-edit-movie>
-                </p>
-              </nz-modal>
-            </form>
-          </div>
-        </td>
-        <td>
-          <span
-            nz-icon
-            nzType="delete"
-            nzTheme="outline"
-            (click)="deleteMovie(i)"
-          ></span>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+                (click)="deleteMovie(data)"
+              ></span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </ng-container>
+  </div>
 </div>
 
-<!-- <nz-modal
-  *ngIf="isVisibleDetails"
-  [(nzVisible)]="isVisibleDetails"
-  [nzTitle]="movieSelectedForDetails.title"
-  (nzOnCancel)="handleCancelDetails()"
->
-  <ng-container *nzModalContent>
-    <h2>Produced by {{ movieSelectedForDetails.producer }}</h2>
-    <p>
-      The movie debuted in {{ movieSelectedForDetails.year }}, having a duration
-      of {{ movieSelectedForDetails.length }}
-    </p>
-  </ng-container>
-</nz-modal> -->
-
+<ng-template #noItems><nz-empty></nz-empty></ng-template>
 <nz-modal
-  *ngIf="isVisibleDetails"
+  *ngIf="isVisibleDetails && !isVisibleEdit"
   [(nzVisible)]="isVisibleDetails"
   [nzTitle]="modalTitle"
   [nzContent]="modalContent"
@@ -123,10 +117,13 @@
   <ng-template #modalTitle>{{ movieSelectedForDetails.title }}</ng-template>
 
   <ng-template #modalContent>
-    <h2>Produced by {{ movieSelectedForDetails.producer }}</h2>
-    <p>
+    <h2 class="description-container">
+      Produced by {{ movieSelectedForDetails.producer }},
+    </h2>
+    <p class="description-container">
       The movie debuted in {{ movieSelectedForDetails.year }}, having a duration
-      of {{ movieSelectedForDetails.length }}
+      of {{ movieSelectedForDetails.length }}, with a rating of
+      <nz-rate [ngModel]="movieSelectedForDetails.rating" nzDisabled></nz-rate>
     </p>
   </ng-template>
 
@@ -136,3 +133,11 @@
     </button>
   </ng-template>
 </nz-modal>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>

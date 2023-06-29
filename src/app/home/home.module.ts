@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 @NgModule({
   declarations: [HomeComponent, AddMovieComponent, EditMovieComponent],
@@ -37,6 +38,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
     MatInputModule,
     NzRateModule,
     NzDropDownModule,
+    NzEmptyModule,
   ],
 })
 export class HomeModule {}
